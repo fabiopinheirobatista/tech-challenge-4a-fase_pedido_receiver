@@ -1,0 +1,44 @@
+services:
+  db-pedido-reciver:
+    image: mysql:8.0
+    container_name: db-pedido-reciver
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "db-pedido-reciver", "-u$MYSQL_USER", "-p$MYSQL_PASSWORD"]
+      interval: 30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+    environment:
+      MYSQL_DATABASE: pedido_reciver_db
+      MYSQL_USER: pedido_reciver_user
+      MYSQL_PASSWORD: secure_password_pedido_reciver
+      MYSQL_ROOT_PASSWORD: secure_root_password_pedido_reciver
+    ports:
+      - "3310:3306"
+    volumes:
+      - db_data_pedido_reciver:/var/lib/mysql
+    networks:
+      - pedido-net
+
+  pedido-reciver-api:
+    build: .
+    container_name: pedido-reciver-api-dev
+    depends_on:
+      db-pedido-reciver:
+        condition: service_healthy
+    ports:
+      - "8086:8083"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db-pedido-reciver:3310/pedido_reciver_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: pedido_reciver_user
+      SPRING_DATASOURCE_PASSWORD: secure_password_pedido_reciver
+    restart: on-failure
+    networks:
+      - pedido-net
+
+volumes:
+  db_data_pedido_reciver:
+
+networks:
+  pedido-net:

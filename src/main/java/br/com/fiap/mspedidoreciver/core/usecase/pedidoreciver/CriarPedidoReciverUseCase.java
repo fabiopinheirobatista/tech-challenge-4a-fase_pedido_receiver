@@ -4,6 +4,7 @@ import br.com.fiap.mspedidoreciver.adapter.mapper.PedidoMapper;
 import br.com.fiap.mspedidoreciver.adapter.persistence.entity.PedidoEntity;
 import br.com.fiap.mspedidoreciver.core.domain.Pedido;
 import br.com.fiap.mspedidoreciver.core.gateways.PedidoReciverGateway;
+import br.com.fiap.mspedidoreciver.core.gateways.ProdutorPedidoMensageriaGateway;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +16,12 @@ public class CriarPedidoReciverUseCase {
 
     private final PedidoReciverGateway pedidoReciverGateway;
     private final PedidoMapper pedidoMapper;
+    private final ProdutorPedidoMensageriaGateway produtorPedidoMensageriaGateway;
 
     public void execute(Pedido pedido) {
-
+        pedido.setStatus("ABERTO");
         pedido.setDataCriacao(LocalDateTime.now());
-        PedidoEntity pedidoEntity = pedidoMapper.toPedidoEntity(pedido);
-        pedidoReciverGateway.processarPedidoReciver(pedido);
+        Pedido pedidoSalvo = pedidoReciverGateway.processarPedidoReciver(pedido);
+        produtorPedidoMensageriaGateway.publicarPedido(pedidoSalvo);
     }
 }

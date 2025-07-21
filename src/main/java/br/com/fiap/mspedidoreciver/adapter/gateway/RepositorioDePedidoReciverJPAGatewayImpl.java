@@ -16,9 +16,10 @@ public class RepositorioDePedidoReciverJPAGatewayImpl implements PedidoReciverGa
     private final PedidoMapper pedidoMapper;
 
     @Override
-    public void processarPedidoReciver(Pedido pedido) {
+    public Pedido processarPedidoReciver(Pedido pedido) {
         PedidoEntity pedidoEntity = pedidoMapper.toPedidoEntity(pedido);
         PedidoEntity save = pedidoReciverRepository.save(pedidoEntity);
+        return pedidoMapper.toPedidoDomain(save);
     }
 
 }

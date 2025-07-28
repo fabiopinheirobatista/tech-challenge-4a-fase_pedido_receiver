@@ -2,6 +2,7 @@ package br.com.fiap.mspedidoreciver.adapter.mapper;
 
 import br.com.fiap.mspedidoreciver.adapter.controller.request.ItemPedidoResponseDTO;
 import br.com.fiap.mspedidoreciver.adapter.controller.request.PedidoReciverResponseDTO;
+import br.com.fiap.mspedidoreciver.adapter.controller.response.PedidoReciverRequestDTO;
 import br.com.fiap.mspedidoreciver.adapter.persistence.entity.ItemPedidoEntity;
 import br.com.fiap.mspedidoreciver.adapter.persistence.entity.PedidoEntity;
 import br.com.fiap.mspedidoreciver.core.domain.ItemPedido;
@@ -98,5 +99,16 @@ public class PedidoMapper {
                 item.getSku(),
                 item.getQuantidade()
         );
+    }
+
+    public PedidoReciverRequestDTO toPedidoReciverRequestDTO(Pedido pedidoRetorno) {
+        return new PedidoReciverRequestDTO()
+                .builder()
+                .clienteId(pedidoRetorno.getClienteId())
+                .id(pedidoRetorno.getId())
+                .dataCriacao(pedidoRetorno.getDataCriacao())
+                .status(pedidoRetorno.getStatus())
+                .numeroCartao(pedidoRetorno.getNumeroCartao())
+                .build();
     }
 }

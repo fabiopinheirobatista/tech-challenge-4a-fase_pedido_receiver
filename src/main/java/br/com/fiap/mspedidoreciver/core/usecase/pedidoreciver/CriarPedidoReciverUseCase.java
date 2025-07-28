@@ -18,10 +18,11 @@ public class CriarPedidoReciverUseCase {
     private final PedidoMapper pedidoMapper;
     private final ProdutorPedidoMensageriaGateway produtorPedidoMensageriaGateway;
 
-    public void execute(Pedido pedido) {
+    public Pedido execute(Pedido pedido) {
         pedido.setStatus("ABERTO");
         pedido.setDataCriacao(LocalDateTime.now());
         Pedido pedidoSalvo = pedidoReciverGateway.processarPedidoReciver(pedido);
         produtorPedidoMensageriaGateway.publicarPedido(pedidoSalvo);
+        return pedidoSalvo;
     }
 }

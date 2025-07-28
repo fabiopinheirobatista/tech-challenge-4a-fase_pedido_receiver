@@ -19,6 +19,5 @@ public class ProdutorPedidoMensageriaGatewayImpl implements ProdutorPedidoMensag
     @Override
     public void publicarPedido(Pedido pedido) {
         kafkaTemplate.send(topicName, pedido);
-        System.out.println("Enviado: " + pedido);
     }
 }

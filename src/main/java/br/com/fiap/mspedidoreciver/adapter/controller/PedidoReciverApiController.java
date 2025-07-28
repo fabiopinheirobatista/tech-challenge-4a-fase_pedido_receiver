@@ -1,6 +1,7 @@
 package br.com.fiap.mspedidoreciver.adapter.controller;
 
 import br.com.fiap.mspedidoreciver.adapter.controller.request.PedidoReciverResponseDTO;
+import br.com.fiap.mspedidoreciver.adapter.controller.response.PedidoReciverRequestDTO;
 import br.com.fiap.mspedidoreciver.adapter.mapper.PedidoMapper;
 import br.com.fiap.mspedidoreciver.core.domain.Pedido;
 import br.com.fiap.mspedidoreciver.core.usecase.pedidoreciver.CriarPedidoReciverUseCase;
@@ -20,9 +21,11 @@ public class PedidoReciverApiController implements PedidoReciverController{
     private final PedidoMapper pedidoMapper;
     @PostMapping
     @Override
-    public ResponseEntity<Void> criarPedido(PedidoReciverResponseDTO pedidoReciverResponseDTO) {
+    public ResponseEntity<PedidoReciverRequestDTO> criarPedido(PedidoReciverResponseDTO pedidoReciverResponseDTO) {
         Pedido pedidoInput = pedidoMapper.toPedidoDomain(pedidoReciverResponseDTO);
-        criarPedidoReciverUseCase.execute(pedidoInput);
-        return ResponseEntity.accepted().build();
+        Pedido pedidoRetorno = criarPedidoReciverUseCase.execute(pedidoInput);
+        PedidoReciverRequestDTO pedidoReciverRequestDTO = pedidoMapper.toPedidoReciverRequestDTO(pedidoRetorno);
+
+        return ResponseEntity.ok(pedidoReciverRequestDTO);
     }
 }

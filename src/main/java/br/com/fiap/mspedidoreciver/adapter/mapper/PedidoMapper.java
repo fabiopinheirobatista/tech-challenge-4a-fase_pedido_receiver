@@ -1,5 +1,10 @@
 package br.com.fiap.mspedidoreciver.adapter.mapper;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Component;
+
 import br.com.fiap.mspedidoreciver.adapter.controller.request.ItemPedidoResponseDTO;
 import br.com.fiap.mspedidoreciver.adapter.controller.request.PedidoReciverResponseDTO;
 import br.com.fiap.mspedidoreciver.adapter.controller.response.PedidoReciverRequestDTO;
@@ -7,10 +12,6 @@ import br.com.fiap.mspedidoreciver.adapter.persistence.entity.ItemPedidoEntity;
 import br.com.fiap.mspedidoreciver.adapter.persistence.entity.PedidoEntity;
 import br.com.fiap.mspedidoreciver.core.domain.ItemPedido;
 import br.com.fiap.mspedidoreciver.core.domain.Pedido;
-import org.springframework.stereotype.Component;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class PedidoMapper {
